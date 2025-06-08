@@ -140,6 +140,7 @@ public class WarehouseManager {
         System.out.printf("Łączny zysk magazynu wynosi: %.2f zł%n", total);
     }
 
+    //ustalanie składek za magazynowanie
     public void setRates() {
         try {
             System.out.println("Podaj dzienną stawkę za składowanie (zł): ");
