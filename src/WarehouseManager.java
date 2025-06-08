@@ -11,7 +11,7 @@ public class WarehouseManager {
     private double dailyRate = 1.0;
     private double penaltyRate = 2.0;
 
-    // dodawanie użytkownika
+    // dodawanie użytkownika  s
     public void addUser() {
         System.out.println("Podaj identyfikator użytkownika: ");
         String id = scanner.nextLine();
@@ -46,9 +46,9 @@ public class WarehouseManager {
         System.out.println("Dodano produkt.");
     }
 
-
+    //
     public void addRecord() {
-        System.out.println("Podaj ID użytkownika: ");
+        System.out.println("Podaj identyfikator użytkownika: ");
         String userId = scanner.nextLine();
         User foundUser = null;
         for (int i = 0; i < users.size(); i++) {
@@ -58,7 +58,7 @@ public class WarehouseManager {
             }
         }
         if (foundUser == null) {
-            System.out.println("Użytkownik nie znaleziony.");
+            System.out.println("Użytkownik o podanym identyfikatorze nie zostal znaleziony.");
             return;
         }
 
@@ -107,7 +107,7 @@ public class WarehouseManager {
             }
         }
     }
-
+    // wyswietlanie listy uzytkownikow
     public void listUsers() {
         System.out.println("--- Lista użytkowników ---");
         for (int i = 0; i < users.size(); i++) {
@@ -115,6 +115,7 @@ public class WarehouseManager {
         }
     }
 
+    //wyswietlanie listy produktow
     public void listProducts() {
         System.out.println("--- Lista produktów ---");
         for (int i = 0; i < products.size(); i++) {
@@ -122,6 +123,7 @@ public class WarehouseManager {
         }
     }
 
+    // kalkulator oplat za skladowanie
     public void showStorageIncome() {
         LocalDate today = LocalDate.now();
         double total = 0;
