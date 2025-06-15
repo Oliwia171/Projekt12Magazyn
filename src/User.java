@@ -15,7 +15,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User(id='" + ID + "', name='" + name+ "')" +
+        return "Użytkownik (id =  " + ID + " Imie i Nazwisko : =" + name+ "')" +
                 "+";
     }
 }

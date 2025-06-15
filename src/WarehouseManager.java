@@ -2,6 +2,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+//użycie kolekcji z pakietu util
+
 public class WarehouseManager {
     private List<StorageRecord> records = new ArrayList<>();
     private List<User> users = new ArrayList<>();
@@ -11,7 +13,7 @@ public class WarehouseManager {
     private double dailyRate = 1.0;
     private double penaltyRate = 2.0;
 
-    // dodawanie użytkownika  s
+    // dodawanie użytkownika
     public void addUser() {
         System.out.println("Podaj identyfikator użytkownika: ");
         String id = scanner.nextLine();
@@ -46,7 +48,9 @@ public class WarehouseManager {
         System.out.println("Dodano produkt.");
     }
 
-    //
+    // dodawanie produktu - wczesniejsza weryfikacja uzytkownika czy istnieje
+    // obsługa wyjątków
+    // operacje CRUD
     public void addRecord() {
         System.out.println("Podaj identyfikator użytkownika: ");
         String userId = scanner.nextLine();
@@ -83,14 +87,14 @@ public class WarehouseManager {
             LocalDate expiry = LocalDate.parse(scanner.nextLine());
 
             records.add(new StorageRecord(foundUser, foundProduct, stored, expiry));
-            System.out.println("Dodano rekord.");
+            System.out.println("Dodano produkt.");
         } catch (DateTimeParseException e) {
             System.out.println("Błędny format daty.");
         }
     }
-    // wyświetlanie listy wszystkich rekordow
+    // wyświetlanie listy wszystkich produktów
     public void listAll() {
-        System.out.println("--- Wszystkie rekordy ---");
+        System.out.println("--- Wszystkie produkty ---");
         for (int i = 0; i < records.size(); i++) {
             System.out.println(records.get(i));
         }
@@ -98,7 +102,7 @@ public class WarehouseManager {
 
     // wyswietlanie produktów przeterminowanych
     public void listExpired() {
-        System.out.println("--- Produkty przeterminowane ---");
+        System.out.println("--- Produkty po terminie ---");
         LocalDate today = LocalDate.now();
         for (int i = 0; i < records.size(); i++) {
             StorageRecord r = records.get(i);
@@ -111,11 +115,13 @@ public class WarehouseManager {
     public void listUsers() {
         System.out.println("--- Lista użytkowników ---");
         for (int i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i));
+            // Wyświetlamy tylko imię i identyfikator użytkownika
+            User user = users.get(i);
+            System.out.println("Użytkownik: " + user.getname() + ", ID: " + user.getID());
         }
     }
 
-    //wyswietlanie listy produktow
+    // wyswietlanie listy produktow
     public void listProducts() {
         System.out.println("--- Lista produktów ---");
         for (int i = 0; i < products.size(); i++) {
@@ -141,6 +147,7 @@ public class WarehouseManager {
     }
 
     //ustalanie składek za magazynowanie
+    //obsługa wyjątków
     public void setRates() {
         try {
             System.out.println("Podaj dzienną stawkę za składowanie (zł): ");

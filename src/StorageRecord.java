@@ -34,19 +34,10 @@ public class StorageRecord {
         return product;
     }
 
-    // pobieranie daty skladowania
-    public LocalDate getStorageDate() {
-        return storageDate;
-    }
-
-    // pobieranie daty wygaśniecia
-    public LocalDate getExpiryDate() {
-        return expiryDate;
-    }
 
     @Override
     public String toString() {
-        return "Rekord{" +
+        return "Produkt{" +
                 "Użytkownik=" + user.getname() +
                 ", Produkt=" + product.getName() +
                 ", Data przyjęcia do magazynu=" + storageDate +
