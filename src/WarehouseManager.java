@@ -2,18 +2,21 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-//użycie kolekcji z pakietu util
+// użycie pakietu util
+// użycie tablic
+// osługa wyjątków
 
 public class WarehouseManager {
     private List<StorageRecord> records = new ArrayList<>();
     private List<User> users = new ArrayList<>();
-    private List<Product> products = new ArrayList<>();
+    private Product[] products = new Product[1000];
+    private int productCount = 0;
     private Scanner scanner = new Scanner(System.in);
 
     private double dailyRate = 1.0;
     private double penaltyRate = 2.0;
 
-    // dodawanie użytkownika
+    // Dodawanie użytkownika
     public void addUser() {
         System.out.println("Podaj identyfikator użytkownika: ");
         String id = scanner.nextLine();
@@ -23,7 +26,7 @@ public class WarehouseManager {
         System.out.println("Dodano użytkownika.");
     }
 
-    // usuwanie użytkownika
+    // Usuwanie użytkownika
     public void removeUser() {
         System.out.println("Podaj identyfikator użytkownika do usunięcia: ");
         String id = scanner.nextLine();
@@ -40,17 +43,19 @@ public class WarehouseManager {
         System.out.println("Nie znaleziono użytkownika o podanym identyfikatorze.");
     }
 
-    //dodawanie produktu
+    // Dodawanie produktu (z użyciem tablicy)
     public void addProduct() {
         System.out.println("Podaj nazwę produktu: ");
         String name = scanner.nextLine();
-        products.add(new Product(name));
-        System.out.println("Dodano produkt.");
+        if (productCount < products.length) {
+            products[productCount++] = new Product(name);  // Dodajemy produkt do tablicy
+            System.out.println("Dodano produkt.");
+        } else {
+            System.out.println("Nie można dodać produktu. Tablica pełna.");
+        }
     }
 
-    // dodawanie produktu - wczesniejsza weryfikacja uzytkownika czy istnieje
-    // obsługa wyjątków
-    // operacje CRUD
+    // Dodawanie rekordu do magazynu
     public void addRecord() {
         System.out.println("Podaj identyfikator użytkownika: ");
         String userId = scanner.nextLine();
@@ -62,16 +67,16 @@ public class WarehouseManager {
             }
         }
         if (foundUser == null) {
-            System.out.println("Użytkownik o podanym identyfikatorze nie zostal znaleziony.");
+            System.out.println("Użytkownik o podanym identyfikatorze nie został znaleziony.");
             return;
         }
 
         System.out.println("Podaj nazwę produktu: ");
         String productName = scanner.nextLine();
         Product foundProduct = null;
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getName().equals(productName)) {
-                foundProduct = products.get(i);
+        for (int i = 0; i < productCount; i++) {
+            if (products[i].getName().equals(productName)) {
+                foundProduct = products[i];
                 break;
             }
         }
@@ -92,7 +97,8 @@ public class WarehouseManager {
             System.out.println("Błędny format daty.");
         }
     }
-    // wyświetlanie listy wszystkich produktów
+
+    // Wyświetlanie wszystkich produktów
     public void listAll() {
         System.out.println("--- Wszystkie produkty ---");
         for (int i = 0; i < records.size(); i++) {
@@ -100,7 +106,7 @@ public class WarehouseManager {
         }
     }
 
-    // wyswietlanie produktów przeterminowanych
+    // Wyświetlanie produktów przeterminowanych
     public void listExpired() {
         System.out.println("--- Produkty po terminie ---");
         LocalDate today = LocalDate.now();
@@ -111,25 +117,25 @@ public class WarehouseManager {
             }
         }
     }
-    // wyswietlanie listy uzytkownikow
+
+    // Wyświetlanie listy użytkowników
     public void listUsers() {
         System.out.println("--- Lista użytkowników ---");
         for (int i = 0; i < users.size(); i++) {
-            // Wyświetlamy tylko imię i identyfikator użytkownika
             User user = users.get(i);
             System.out.println("Użytkownik: " + user.getname() + ", ID: " + user.getID());
         }
     }
 
-    // wyswietlanie listy produktow
+    // Wyświetlanie listy produktów
     public void listProducts() {
         System.out.println("--- Lista produktów ---");
-        for (int i = 0; i < products.size(); i++) {
-            System.out.println(products.get(i));
+        for (int i = 0; i < productCount; i++) {
+            System.out.println(products[i]);
         }
     }
 
-    // kalkulator oplat za skladowanie
+    // Kalkulacja opłat za składowanie
     public void showStorageIncome() {
         LocalDate today = LocalDate.now();
         double total = 0;
@@ -146,8 +152,7 @@ public class WarehouseManager {
         System.out.printf("Łączny zysk magazynu wynosi: %.2f zł%n", total);
     }
 
-    //ustalanie składek za magazynowanie
-    //obsługa wyjątków
+    // Ustalanie stawek za magazynowanie
     public void setRates() {
         try {
             System.out.println("Podaj dzienną stawkę za składowanie (zł): ");
